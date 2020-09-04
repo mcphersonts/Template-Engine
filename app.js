@@ -9,20 +9,145 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const teamMembers = [];
 
 function app() {
-    function createTeam() {
-        inquirer.prompt([{
-            type: "list",
-            name: "role",
-            message: "Select team member role:",
-            choices: ["Manager", "Engineer", "Intern"],
-        }])
+  function createTeam() {
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "role",
+          message: "Select team member role:",
+          choices: ["Manager", "Engineer", "Intern", "Exit"],
+        },
+      ])
+      .then((choice) => {
+        switch (choice.role) {
+          case "Manager":
+            addManager();
+            break;
+          case "Engineer":
+            addEngineer();
+            break;
+          case "Intern":
+            addIntern();
+            break;
+          default:
+            buildTeam();
+        }
+      });
+    function addManager() {
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "managerName",
+            message: "Enter name:",
+            validate: (answer) => {
+              if (answer !== "") {
+                return true;
+              }
+              return "Please enter name";
+            },
+          },
+          {
+            type: "input",
+            name: "managerId",
+            message: "Enter ID:",
+          },
+          {
+            type: "input",
+            name: "managerEmail",
+            message: "Enter Email:",
+          },
+          {
+            type: "input",
+            name: "managerOfficeNumber",
+            message: "Enter office number:",
+          },
+        ])
+        .then((answers) => {
+          const manager = new Manager(
+            answers.managerName,
+            answers.managerId,
+            answers.managerEmail,
+            answers.managerOfficeNumber
+          );
+          teamMembers.push(manager);
+          console.log(manager)
+          console.log(teamMembers)
+          createTeam();
+        });
     }
-    createTeam()
+    function addEngineer() {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "engineerName",
+          message: "Enter name:",
+          validate: (answer) => {
+            if (answer !== "") {
+              return true;
+            }
+            return "Please enter name";
+          },
+        },
+        {
+          type: "input",
+          name: "engineerId",
+          message: "Enter ID:",
+        },
+        {
+          type: "input",
+          name: "engineerEmail",
+          message: "Enter Email:",
+        },
+        {
+          type: "input",
+          name: "engineerGithub",
+          message: "Enter Github:",
+        },
+      ]);
+    }
+    function addIntern() {
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "internName",
+          message: "Enter name:",
+          validate: (answer) => {
+            if (answer !== "") {
+              return true;
+            }
+            return "Please enter name";
+          },
+        },
+        {
+          type: "input",
+          name: "managerId",
+          message: "Enter ID:",
+        },
+        {
+          type: "input",
+          name: "managerEmail",
+          message: "Enter Email:",
+        },
+        {
+          type: "input",
+          name: "managerOfficeNumber",
+          message: "Enter office number:",
+        },
+      ]);
+    }
+  }
+  function buildTeam() {
+      fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
+  }
+  createTeam();
 }
 
-app()
+app();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
