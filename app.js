@@ -75,74 +75,100 @@ function app() {
             answers.managerOfficeNumber
           );
           teamMembers.push(manager);
-          console.log(manager)
-          console.log(teamMembers)
+          console.log(manager);
+          console.log(teamMembers);
           createTeam();
         });
     }
     function addEngineer() {
-      inquirer.prompt([
-        {
-          type: "input",
-          name: "engineerName",
-          message: "Enter name:",
-          validate: (answer) => {
-            if (answer !== "") {
-              return true;
-            }
-            return "Please enter name";
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "engineerName",
+            message: "Enter name:",
+            validate: (answer) => {
+              if (answer !== "") {
+                return true;
+              }
+              return "Please enter name";
+            },
           },
-        },
-        {
-          type: "input",
-          name: "engineerId",
-          message: "Enter ID:",
-        },
-        {
-          type: "input",
-          name: "engineerEmail",
-          message: "Enter Email:",
-        },
-        {
-          type: "input",
-          name: "engineerGithub",
-          message: "Enter Github:",
-        },
-      ]);
+          {
+            type: "input",
+            name: "engineerId",
+            message: "Enter ID:",
+          },
+          {
+            type: "input",
+            name: "engineerEmail",
+            message: "Enter Email:",
+          },
+          {
+            type: "input",
+            name: "engineerGithub",
+            message: "Enter Github:",
+          },
+        ])
+        .then((answers) => {
+          const engineer = new Engineer(
+            answers.engineerName,
+            answers.engineerId,
+            answers.engineerEmail,
+            answers.engineerGithub
+          );
+          teamMembers.push(engineer);
+          console.log(engineer);
+          console.log(teamMembers);
+          createTeam();
+        });
     }
     function addIntern() {
-      inquirer.prompt([
-        {
-          type: "input",
-          name: "internName",
-          message: "Enter name:",
-          validate: (answer) => {
-            if (answer !== "") {
-              return true;
-            }
-            return "Please enter name";
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "internName",
+            message: "Enter name:",
+            validate: (answer) => {
+              if (answer !== "") {
+                return true;
+              }
+              return "Please enter name";
+            },
           },
-        },
-        {
-          type: "input",
-          name: "managerId",
-          message: "Enter ID:",
-        },
-        {
-          type: "input",
-          name: "managerEmail",
-          message: "Enter Email:",
-        },
-        {
-          type: "input",
-          name: "managerOfficeNumber",
-          message: "Enter office number:",
-        },
-      ]);
+          {
+            type: "input",
+            name: "internId",
+            message: "Enter ID:",
+          },
+          {
+            type: "input",
+            name: "internEmail",
+            message: "Enter Email:",
+          },
+          {
+            type: "input",
+            name: "internSchool",
+            message: "Enter name of school:",
+          },
+        ])
+        .then((answers) => {
+          const intern = new Intern(
+            answers.internName,
+            answers.internId,
+            answers.internEmail,
+            answers.internSchool
+          );
+          teamMembers.push(intern);
+          console.log(intern);
+          console.log(teamMembers);
+          createTeam();
+        });
     }
   }
   function buildTeam() {
-      fs.writeFileSync(outputPath, render(teamMembers), "utf-8")
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
   }
   createTeam();
 }
